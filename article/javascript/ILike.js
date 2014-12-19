@@ -13,24 +13,24 @@ define(['CanvasUtil'],function(CanvasUtil){
 		this.draw = function(){
 			//var def = $.Deffered();
 			var len = like_list.length;
-			var item, item_canvas, item_width, item_height, search_index, search_x, search_y;
+			var item, item_canvas, search_index, search_x, search_y;
 			while( drawed_index < len ) {
 				item = like_list[drawed_index];
 				item_canvas = getCanvas(item, drawed_index);
-				item_width = item_canvas.width;
-				item_height = item_canvas.height;
+
+				item_canvas = CanvasUtil.getFitCanvas(item_canvas);
 				
 				do{
-					search_index = getSearchIndex(searched_list, drawed_index, width, height, item_width, item_height);
+					search_index = getSearchIndex(searched_list, drawed_index, width, height, item_canvas);
 					search_x = search_index[0];
 					search_y = search_index[1];
 					searched_list.push(search_index);
-				}while(!CanvasUtil.filled(ctx, search_x, search_y, item_width, item_height, [0, 0, 0, 0]));
+				}while(CanvasUtil.isCollision(canvas, item_canvas, search_x, search_y));
 
-				ctx.save();
+				//ctx.save();
 
 				ctx.drawImage(item_canvas, search_x, search_y);
-				ctx.restore();
+				//ctx.restore();
 
 				drawed_index++;
 			}
