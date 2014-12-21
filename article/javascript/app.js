@@ -18,10 +18,12 @@ define(['jquery', 'ILike', 'lodash', 'EventEmitter'], function($, ILike, _, Even
 		var canvas = $canvas[0];
 		var margin = 10;
 		var delay = 3000;
+		var last_draw_time;
 
 		var ctx = canvas.getContext("2d");
 
 		function draw(){
+			last_draw_time = _.now();
 			ctx.clearRect(margin, margin, width, height);
 			ctx.drawImage(IL.getCanvas() , margin, margin);
 		}
@@ -37,12 +39,20 @@ define(['jquery', 'ILike', 'lodash', 'EventEmitter'], function($, ILike, _, Even
 			$redraw_icon.addClass('drawing');
 		});
 
-		IL.on('change', delayDraw);
+		IL.on('change', function(){
+			delayDraw();
+		});
 
 		IL.on('done', function(){
 			draw();
 			var $redraw_icon = $('#redraw_icon');
 			$redraw_icon.removeClass('drawing');
+		});
+
+		IL.on('collision', function(){
+			if( _.now() - last_draw_time > 10000 ) {
+				IL.init();
+			}
 		});
 
 		

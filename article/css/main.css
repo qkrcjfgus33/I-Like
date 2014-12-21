@@ -46,3 +46,12 @@
 	background-color: white;
 	color: red;
 }
+
+.author{
+	text-align: right;
+	display: inline;
+}
+.author *{
+	text-align: right;
+	display: inline;
+}
