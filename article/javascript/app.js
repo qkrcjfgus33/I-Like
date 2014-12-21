@@ -34,14 +34,30 @@ define(['jquery', 'ILike', 'lodash'], function($, ILike, _){
 	function addItem(){
 		var $item = $('#itme');
 		var item = $item.val();
+
+		$item.attr('disabled');
+
 		il.push(item);
 		il.draw();
 		ctx.drawImage(il.getCanvas() , margin, margin);
+		
+		$item.val('');
+		$item.removeAttr('disabled');
+	}
+
+	function disableInput(){
+		var $item = $('#itme');
+		
+	}
+
+	function ableInput(){
+		var $item = $('#itme');
+		
 	}
 
 	function removeInput(){
 		var $item = $('#itme');
-		$item.val('');
+		
 	}
 
 	function getCanvas(item, drawed_index){
@@ -51,7 +67,7 @@ define(['jquery', 'ILike', 'lodash'], function($, ILike, _){
 		canvas.width = width;
 		canvas.height = height;
 
-		var font_height 	= max - drawed_index;
+		var font_height 	= max;// - drawed_index*10;
 		ctx.textBaseline	="top"; 
 		ctx.font 		= font_height+"px Arial";
 		ctx.fillText(item, 0, 0);

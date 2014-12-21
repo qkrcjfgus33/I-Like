@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/qkrcjfgus33/I-Like",
   "dependencies": {
+    "bootstrap": "^3.3.1",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
+    "require-css": "^0.1.5",
     "requirejs": "^2.1.15"
   }
 }

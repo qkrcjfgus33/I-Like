@@ -22,15 +22,12 @@ define(['CanvasUtil'],function(CanvasUtil){
 				
 				do{
 					search_index = getSearchIndex(searched_list, drawed_index, width, height, item_canvas);
-					search_x = search_index[0];
-					search_y = search_index[1];
-					searched_list.push(search_index);
+					search_x = parseInt(search_index[0]);
+					search_y = parseInt(search_index[1]);
+					searched_list.push([search_x, search_y]);
 				}while(CanvasUtil.isCollision(canvas, item_canvas, search_x, search_y));
 
-				//ctx.save();
-
 				ctx.drawImage(item_canvas, search_x, search_y);
-				//ctx.restore();
 
 				drawed_index++;
 			}
