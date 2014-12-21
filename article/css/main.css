@@ -1,0 +1,48 @@
+.content{
+	width: 800px;
+	height:100%;
+	display: block;
+	
+	background-color:slategray;
+
+	padding:10px;
+}
+
+#board{
+	background-color:white;
+}
+
+
+.content>*{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+
+.content .text{
+	background-color:slategray;
+	color: white;
+}
+
+.content select{
+	font-size: 20px;
+}
+
+.content  .icon:not(.drawing)::before{
+	background-color: white;
+	color: slategray;
+}
+
+.color_pixer>*{
+	height: 30px;
+}
+
+#start_size{
+	text-align: right;
+}
+
+.content  .drawing::before{
+	background-color: white;
+	color: red;
+}
