@@ -1,49 +1,107 @@
-define(['CanvasUtil'],function(CanvasUtil){
-	function ILike(width, height, getCanvas,  getSearchIndex){
-		var canvas  = document.createElement('canvas');
-		var ctx 			= canvas.getContext('2d');
-		canvas.width 	= width;
-		canvas.height 	= height;
+define(['CanvasUtil', 'EventEmitter', 'lodash'],function(CanvasUtil, EventEmitter, _){
+	function ILike(width, height, getText,  getPostion){
+		var canvas, ctx, drawed_index, search_num;
 
+		var ee = new EventEmitter();
 		var like_list = [];
-		var drawed_index = 0;
 
-		var searched_list = [];
+		init();
+		draw();
 
-		this.draw = function(){
-			//var def = $.Deffered();
+		this.init 			= init;
+		this.on 				= _.bind(ee.on, ee);
+		this.setGetText 	= setGetText;
+		this.setGetPostion 	= setGetPostion;
+		this.setLikeList 		= setLikeList;
+		this.getCanvas 		= getCanvas;
+
+		function init(){
+			canvas 			= document.createElement('canvas');
+			ctx 				= canvas.getContext('2d');
+			canvas.width 	= width;
+			canvas.height 	= height;
+
+			drawed_index 	= 0;
+			search_num 	= 0;
+		}
+
+		function setGetText(t){
+			getText = t;
+			init();
+		}
+
+		function setGetPostion(p){
+			getPostion = p;
+			init();
+		}
+
+		function setLikeList(list){
+			like_list = list;
+			init();
+		}
+
+		function draw(){
+			var result, pre_state;
+
+			pre_state = 'done'
+			setTimeout( drawing , 30)
+
+			function drawing(){
+				result = tryDraw()
+				
+				if( result === 'done'){
+					if( pre_state !== result ){
+						ee.emit('done');
+					}
+					setTimeout( drawing , 500);
+				}else{
+					if( pre_state === 'done' ){
+						ee.emit('drawing');
+					}
+
+					if( result === 'change'){
+						ee.emit('change');
+						setTimeout( drawing , 30);
+					}
+					else if( result === 'collision'){
+						ee.emit('collision');
+						setTimeout( drawing , 30);
+					}
+				}
+
+				pre_state = result;
+			}
+		}
+
+		function tryDraw(){
 			var len = like_list.length;
 			var item, item_canvas, search_index, search_x, search_y;
-			while( drawed_index < len ) {
-				item = like_list[drawed_index];
-				item_canvas = getCanvas(item, drawed_index);
-
-				item_canvas = CanvasUtil.getFitCanvas(item_canvas);
-				
-				do{
-					search_index = getSearchIndex(searched_list, drawed_index, width, height, item_canvas);
-					search_x = parseInt(search_index[0]);
-					search_y = parseInt(search_index[1]);
-					searched_list.push([search_x, search_y]);
-				}while(CanvasUtil.isCollision(canvas, item_canvas, search_x, search_y));
-
-				ctx.drawImage(item_canvas, search_x, search_y);
-
-				drawed_index++;
+			if( drawed_index >= len ) {
+				return 'done'
 			}
 
-			//return def.promise();
+			item = like_list[drawed_index];
+			item_canvas = getText(item, drawed_index, like_list.length);
+
+			item_canvas = CanvasUtil.getFitCanvas(item_canvas);
+			
+			search_index = getPostion( item_canvas, width, height, search_num, drawed_index );
+			search_num++;
+
+			search_x = parseInt(search_index[0]);
+			search_y = parseInt(search_index[1]);
+
+			if( CanvasUtil.isCollision(canvas, item_canvas, search_x, search_y) ){
+				return 'collision';
+			} 
+
+			ctx.drawImage(item_canvas, search_x, search_y);
+			drawed_index++;
+
+			return 'change';
 		}
 
-		this.pop = function(){
-			Array.prototype.pop.apply(like_list, arguments);
-		}
-
-		this.push = function(){
-			Array.prototype.push.apply(like_list, arguments);
-		}
-
-		this.getCanvas = function(){
+		function getCanvas(){
 			return canvas;
 		}
 	}

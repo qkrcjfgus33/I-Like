@@ -21,6 +21,7 @@
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
     "require-css": "^0.1.5",
-    "requirejs": "^2.1.15"
+    "requirejs": "^2.1.15",
+    "wolfy87-eventemitter": "git://github.com/Wolfy87/EventEmitter"
   }
 }
