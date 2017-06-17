@@ -1,3 +1,3 @@
 I-Like
 ======
-http://qkrcjfgus33.github.io/I-Like
+http://vomvoru.github.io/I-Like/
