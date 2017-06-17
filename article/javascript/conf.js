@@ -1,5 +1,5 @@
 (function(){
-	var node_modules = '../../node_modules';
+	var node_modules = '../../modules';
 
 	require.config({
 		paths: {
